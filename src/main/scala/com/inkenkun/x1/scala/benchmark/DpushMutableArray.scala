@@ -1,8 +1,10 @@
 package com.inkenkun.x1.scala.benchmark
 
-import scala.collection.{ mutable => mu }
+import scala.collection.{mutable => mu }
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 import org.openjdk.jmh.annotations.{Benchmark, Scope, State}
+import java.util
+import java.util.ArrayList
 
 @State( Scope.Benchmark )
 class DpushMutableArray {
@@ -14,6 +16,42 @@ class DpushMutableArray {
   import arrayImplicits._
   ArrayBufferMonoid
   ListBuffer
+
+  @Benchmark
+  def append$ArrayList$1k:   ArrayList[Int] = appendJavaCollection[ArrayList]( n1k )
+
+  @Benchmark
+  def append$ArrayList$10k:  ArrayList[Int] = appendJavaCollection[ArrayList]( n10k )
+
+  @Benchmark
+  def append$ArrayList$100k: ArrayList[Int] = appendJavaCollection[ArrayList]( n100k )
+
+  @Benchmark
+  def insert$ArrayList$1k:   ArrayList[Int] = insertJavaCollection[ArrayList]( n1k )
+
+  @Benchmark
+  def insert$ArrayList$10k:  ArrayList[Int] = insertJavaCollection[ArrayList]( n10k )
+
+  @Benchmark
+  def insert$ArrayList$100k: ArrayList[Int] = insertJavaCollection[ArrayList]( n100k )
+
+  @Benchmark
+  def appendLinkedList$1k:   ArrayList[Int] = appendJavaCollection[ArrayList]( n1k )
+
+  @Benchmark
+  def append$LinkedList$10k:  ArrayList[Int] = appendJavaCollection[ArrayList]( n10k )
+
+  @Benchmark
+  def append$LinkedList$100k: ArrayList[Int] = appendJavaCollection[ArrayList]( n100k )
+
+  @Benchmark
+  def insert$LinkedList$1k:   util.LinkedList[Int] = insertJavaCollection[util.LinkedList]( n1k )
+
+  @Benchmark
+  def insert$LinkedList$10k:  util.LinkedList[Int] = insertJavaCollection[util.LinkedList]( n10k )
+
+  @Benchmark
+  def insert$LinkedList$100k: util.LinkedList[Int] = insertJavaCollection[util.LinkedList]( n100k )
 
   @Benchmark
   def append$ArrayBuffer$1k:   ArrayBuffer[Int] = appendCollection[ArrayBuffer]( n1k )
@@ -60,10 +98,26 @@ class DpushMutableArray {
     xs
   }
 
-  private[benchmark] def insertCollection[M[_] <: mu.Buffer[_]](n: Int )(implicit m: Monoid[M, Int] ): M[Int] = {
+  private [benchmark] def appendJavaCollection[M[_] <: util.List[_]](n: Int)(implicit m: Monoid[M, Int]): M[Int] = {
+    val xs = m.empty
+    for(i <- 1 to n) {
+      m.insert(xs, n)
+    }
+    xs
+  }
+
+  private[benchmark] def insertCollection[M[__] <: mu.Buffer[_]](n: Int )(implicit m: Monoid[M, Int] ): M[Int] = {
     val xs = m.empty
     for ( i <- 1 to n ) {
       m.insert( xs, i )
+    }
+    xs
+  }
+
+  private [benchmark] def insertJavaCollection[M[_] <: util.List[_]](n: Int)(implicit m: Monoid[M, Int]): M[Int] = {
+    val xs = m.empty
+    for(i <- 1 to n) {
+      m.insert(xs, n)
     }
     xs
   }
