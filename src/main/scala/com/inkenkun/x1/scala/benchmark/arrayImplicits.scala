@@ -57,7 +57,7 @@ object arrayImplicits {
     def take( rs: ArrayBuffer[Int] ): ArrayBuffer[Int] = rs.take( rs.size - 1 )
   }
   implicit object ArrayListMonoid extends Monoid[({type F[X] = ArrayList[X]})#F, Int] {
-    def empty: ArrayList[Int] = new ArrayList
+    def empty: ArrayList[Int] = new ArrayList(100)
     def append(rs: ArrayList[Int], a: Int ): ArrayList[Int] = { rs.add(a); rs}
     def insert(rs: ArrayList[Int], a: Int ): ArrayList[Int] = { rs.add(0, a); rs }
     def removeHead( rs: ArrayList[Int] ): ArrayList[Int] = { rs.remove(0); rs }

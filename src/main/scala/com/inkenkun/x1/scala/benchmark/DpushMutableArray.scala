@@ -101,7 +101,7 @@ class DpushMutableArray {
   private [benchmark] def appendJavaCollection[M[_] <: util.List[_]](n: Int)(implicit m: Monoid[M, Int]): M[Int] = {
     val xs = m.empty
     for(i <- 1 to n) {
-      m.insert(xs, n)
+      m.append(xs, n)
     }
     xs
   }
