@@ -13,7 +13,9 @@ resolvers += "Spy" at "http://files.couchbase.com/maven2/"
 libraryDependencies ++= Seq(
   "com.bionicspirit" %% "shade"          % "1.6.0",
   "net.debasishg"    %% "redisclient"    % "3.0",
-  "org.scalatest"     % "scalatest_2.11" % "2.2.4" % "test"
+  "org.scalatest"     % "scalatest_2.11" % "2.2.4" % "test",
+  "org.eclipse.collections" % "eclipse-collections-api" % "8.0.0",
+  "org.eclipse.collections" % "eclipse-collections" % "8.0.0"
 )
 
 enablePlugins( JmhPlugin )
